@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <style>
+    div {
+      width:50%;
+    }
+    video, canvas {
+      width: 100%;
+    }
+    canvas {
+      height: 20px;
+    }
+    #status-bar{
+      width:0px;
+      height: 20px;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <p>
+      <video id="my-video" preload="none" controls src="http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_h264.mov"></video>
+    </p>
+    <p>
+      <canvas id="buffer-canvas"></canvas>
+    </p>
+    <p id="status-bar"></p>
+  </div>
+
+  <script>
+    var myVideo = document.getElementById('my-video');
+    var myCanvas = document.getElementById('buffer-canvas');
+    var context = myCanvas.getContext('2d');
+
+    context.fillStyle = 'lightgray';
+    context.fillRect(0, 0, myCanvas.width, myCanvas.height);
+    context.fillStyle = 'red';
+    context.strokeStyle = 'white';
+
+    // display TimeRanges
+
+/*
+    myVideo.addEventListener('progress', function() {
+      var w = 100*(myVideo.buffered.end(1)) / myVideo.duration;
+      document.getElementById("status-bar").style.width = w+"%";
+    });
+*/
+
+
+    myVideo.addEventListener('progress', function() {
+      var inc = myCanvas.width / myVideo.duration;
+      for (i = 0; i < myVideo.buffered.length; i++) {
+
+        var startX = myVideo.buffered.start(i) * inc;
+        var endX = myVideo.buffered.end(i) * inc;
+        var width = endX - startX;
+        console.log(context.fillStyle,inc,startX,endX,width);
+
+        context.fillRect(startX, 0, width, myCanvas.height);
+      }
+    });
+  </script>
+</body>
+</html>
