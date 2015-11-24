@@ -12,11 +12,6 @@
     canvas {
       height: 20px;
     }
-    #status-bar{
-      width:0px;
-      height: 20px;
-      background: black;
-    }
   </style>
 </head>
 <body>
@@ -27,7 +22,6 @@
     <p>
       <canvas id="buffer-canvas"></canvas>
     </p>
-    <p id="status-bar"></p>
   </div>
 
   <script>
@@ -40,16 +34,6 @@
     context.fillStyle = 'red';
     context.strokeStyle = 'white';
 
-    // display TimeRanges
-
-/*
-    myVideo.addEventListener('progress', function() {
-      var w = 100*(myVideo.buffered.end(1)) / myVideo.duration;
-      document.getElementById("status-bar").style.width = w+"%";
-    });
-*/
-
-
     myVideo.addEventListener('progress', function() {
       var inc = myCanvas.width / myVideo.duration;
       for (i = 0; i < myVideo.buffered.length; i++) {
@@ -57,7 +41,6 @@
         var startX = myVideo.buffered.start(i) * inc;
         var endX = myVideo.buffered.end(i) * inc;
         var width = endX - startX;
-        console.log(context.fillStyle,inc,startX,endX,width);
 
         context.fillRect(startX, 0, width, myCanvas.height);
       }
